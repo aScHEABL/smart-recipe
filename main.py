@@ -23,14 +23,20 @@ async def search(e: events.ValueChangeEventArguments) -> None:
         return
     with results:
         for meal in response.json()['meals'] or []:
-            with ui.image(meal['strMealThumb']).classes('w-64'):
+            with ui.image(meal['strMealThumb']).classes('w-48'):
                 ui.label(meal['strMeal']).classes('absolute-bottom text-subtitle2 text-center')
     running_query = None
 
-# 創見一個上方有空位的搜尋欄
-search_field = ui.input(on_change=search) \
-    .props('autofocus outlined rounded item-aligned input-class="ml-3"') \
-    .classes('w-96 self-center mt-2 transition-all')
-results = ui.row()
+ui.query('body').classes('flex justify-center bg-zinc-800')
+ui.query('.nicegui-content').classes('p-0 gap-0')
+
+# 創建一個上方有空位的搜尋欄
+with ui.element('header').classes('flex justify-center bg-white rounded-t'):
+    search_field = ui.input(on_change=search) \
+        .props('autofocus outlined rounded item-aligned input-class="ml-3"') \
+        .classes('w-[28rem]')
+
+with ui.element('div').classes('w-96 w-[28rem] bg-white h-[100vh] rounded-b'):
+    results = ui.element('div').classes('flex justify-center gap-4')
 
 ui.run()
