@@ -1,11 +1,20 @@
 import reflex as rx
+import httpx
 
 from rxconfig import config
 
 
 class State(rx.State):
-    ...
+    query: str = ""
+    meals: list = []
 
+    async def search(self):
+        async with httpx.AsyncClient() as client:
+            response = await client.get(f'https://www.themealdb.com/api/json/v1/1/search.php?s={self.query}')
+            if response.status_code == 200:
+                data = response.json()
+                self.meals = data.get("meals", [])
+                print(self.meals)
 
 def index() -> rx.Component:
     # 首頁 (Index)
@@ -16,6 +25,7 @@ def index() -> rx.Component:
                             type="search",
                             size="3",
                             width="400px",
+                            on_change=State.search
                         ),
             )
     )
