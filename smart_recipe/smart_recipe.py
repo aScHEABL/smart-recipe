@@ -8,13 +8,21 @@ class State(rx.State):
     query: str = ""
     meals: list = []
 
-    async def search(self):
+    async def search(self, query: str):
+        self.query = query
+        if not query:
+            self.meals = []
+            print("User clears query")
+            return
+
         async with httpx.AsyncClient() as client:
             response = await client.get(f'https://www.themealdb.com/api/json/v1/1/search.php?s={self.query}')
             if response.status_code == 200:
                 data = response.json()
                 self.meals = data.get("meals", [])
                 print(self.meals)
+            else:
+                self.meals = []
 
 def index() -> rx.Component:
     # 首頁 (Index)
