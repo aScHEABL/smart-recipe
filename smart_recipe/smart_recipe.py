@@ -56,7 +56,7 @@ def index() -> rx.Component:
     return rx.container(
             rx.center(
                 rx.input(rx.input.slot(rx.icon("search")),
-                            placeholder="搜尋食譜",
+                            placeholder="輸入英文食譜名子",
                             type="search",
                             size="3",
                             width="400px",
