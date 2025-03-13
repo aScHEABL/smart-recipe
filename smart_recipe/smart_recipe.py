@@ -34,19 +34,19 @@ class State(rx.State):
 def ReusableCard(item: rx.Var):
     return rx.cond(
                 State.render_menu,
-                rx.fragment(
-                    rx.flex(
-                        rx.card(
-                            rx.link(
-                                rx.image(src=item.strMealThumb, width="200px"),
-                                href=item.strYoutube.to(str),
-                                is_external=True,
-                            ),
+                    rx.card(
+                        rx.link(
+                            rx.image(src=item.strMealThumb),
+                            href=item.strYoutube.to(str),
+                            is_external=True,
                         ),
-                        rx.heading(item.strMeal),
-                        wrap="wrap",
-                    )
-                ), # 條件式宣染，故意留白
+                        rx.heading(
+                            item.strMeal, 
+                            size="4", 
+                            align="center",
+                            padding_top="1em",
+                        ),
+                    ),
             )
 
                 
@@ -62,11 +62,14 @@ def index() -> rx.Component:
                             width="400px",
                             on_change=State.search,
                         ),
-                rx.flex(rx.foreach(State.meals, ReusableCard),
-                            wrap="wrap",
-                            justify="center",
-                        ),
+                rx.grid(
+                        rx.foreach(State.meals, ReusableCard),
+                        columns="2",
+                        spacing="4",
+                        width="80%",
+                    ),
                 wrap="wrap",
+                spacing="4",
             )
     )
 
